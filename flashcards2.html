@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flashcards</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e12;
+    --card-front: #1a1a24;
+    --card-back: #12201a;
+    --accent: #c8f060;
+    --accent2: #60c8f0;
+    --text: #f0ede8;
+    --muted: #7a7888;
+    --border: #2e2e3e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    padding: 2rem;
+    overflow: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 80%, rgba(200,240,96,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 20%, rgba(96,200,240,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    letter-spacing: 0.04em;
+    color: var(--text);
+    opacity: 0.9;
+  }
+
+  h1 span {
+    color: var(--accent);
+  }
+
+  /* Card scene */
+  .scene {
+    width: min(420px, 90vw);
+    height: 260px;
+    perspective: 1200px;
+    cursor: pointer;
+  }
+
+  .card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card.flipped {
+    transform: rotateY(180deg);
+  }
+
+  .card-face {
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem;
+    text-align: center;
+    border: 1px solid var(--border);
+    gap: 1rem;
+  }
+
+  .card-front {
+    background: var(--card-front);
+    box-shadow:
+      0 0 0 1px rgba(200,240,96,0.08),
+      0 20px 60px rgba(0,0,0,0.5),
+      inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+
+  .card-back {
+    background: var(--card-back);
+    transform: rotateY(180deg);
+    box-shadow:
+      0 0 0 1px rgba(96,200,240,0.1),
+      0 20px 60px rgba(0,0,0,0.5),
+      inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+
+  .card-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.3em 0.9em;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+    opacity: 0.5;
+  }
+
+  .card-front .card-label { color: var(--accent); }
+  .card-back .card-label { color: var(--accent2); }
+
+  .card-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .card-hint {
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* Controls */
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .counter {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--muted);
+    min-width: 3.5rem;
+    text-align: center;
+  }
+
+  .counter strong {
+    color: var(--accent);
+    font-size: 1.4rem;
+  }
+
+  button {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    padding: 0.65rem 1.5rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(200,240,96,0.05);
+  }
+
+  button:active {
+    transform: scale(0.96);
+  }
+
+  button:disabled {
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  /* Progress dots */
+  .dots {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: all 0.3s ease;
+  }
+
+  .dot.active {
+    background: var(--accent);
+    box-shadow: 0 0 8px rgba(200,240,96,0.5);
+    width: 18px;
+    border-radius: 999px;
+  }
+</style>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+    options: { skipHtmlTags: ['script','noscript','style','textarea'] }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div class="scene" onclick="flipCard()">
+  <div class="card" id="card">
+    <div class="card-face card-front">
+      <span class="card-label">Question</span>
+      <p class="card-text" id="question-text"></p>
+      <span class="card-hint">Cliquer pour révéler</span>
+    </div>
+    <div class="card-face card-back">
+      <span class="card-label">Réponse</span>
+      <p class="card-text" id="answer-text"></p>
+      <span class="card-hint">Cliquer pour revenir</span>
+    </div>
+  </div>
+</div>
+
+<div class="controls">
+  <button id="btn-prev" onclick="prevCard()">← Précédent</button>
+  <div class="counter"><strong id="current">1</strong><span id="total">/3</span></div>
+  <button id="btn-next" onclick="nextCard()">Suivant →</button>
+</div>
+
+<div class="dots" id="dots"></div>
+
+<script>
+  let cards = [];
+
+  fetch('questions.txt')
+    .then(r => r.text())
+    .then(contenu => {
+      contenu = contenu.trim();
+      return fetch(contenu);
+    })
+    .then(r => r.text())
+    .then(tex => {
+      const qMatches = [...tex.matchAll(/\\begin\{exoq\}([\s\S]*?)\\end\{exoq\}/g)];
+      const aMatches = [...tex.matchAll(/\\begin\{exor\}([\s\S]*?)\\end\{exor\}/g)];
+      cards = qMatches.map((q, i) => ({
+        question: q[1].trim().replace(/\\oe\{\}/g, 'œ'),
+        answer: aMatches[i][1].replace(/\\bqr/, '').replace(/\\oe\{\}/g, 'œ').trim()
+      }));
+      render();
+    });
+
+
+  let current = 0;
+  let isFlipped = false;
+
+  function render() {
+    const card = cards[current];
+    document.getElementById('question-text').innerHTML = card.question;
+    document.getElementById('answer-text').innerHTML = card.answer;
+    document.getElementById('current').textContent = current + 1;
+    document.getElementById('total').textContent = '/' + cards.length;
+
+    // Reset flip
+    isFlipped = false;
+	const cardEl = document.getElementById('card');
+    cardEl.style.transition = 'none';
+    cardEl.classList.remove('flipped');
+    cardEl.getBoundingClientRect(); // force reflow
+    cardEl.style.transition = '';
+
+    // Buttons
+    document.getElementById('btn-prev').disabled = current === 0;
+    document.getElementById('btn-next').disabled = current === cards.length - 1;
+
+    // Dots
+    const dotsEl = document.getElementById('dots');
+    dotsEl.innerHTML = '';
+    cards.forEach((_, i) => {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i === current ? ' active' : '');
+      dotsEl.appendChild(d);
+    });
+	if (window.MathJax) MathJax.typesetPromise(['#card']);
+  }
+
+  function flipCard() {
+    isFlipped = !isFlipped;
+    document.getElementById('card').classList.toggle('flipped', isFlipped);
+  }
+
+  function prevCard() {
+    if (current > 0) { current--; render(); }
+  }
+
+  function nextCard() {
+    if (current < cards.length - 1) { current++; render(); }
+  }
+
+</script>
+</body>
+</html>

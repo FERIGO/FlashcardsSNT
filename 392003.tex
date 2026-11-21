@@ -1,0 +1,118 @@
+% Questions de cours sur la sécurisation des communications (NSI)
+
+\begin{taggedblock}{1}
+\begin{exoq}
+Quel est le principe de base du chiffrement ?
+\end{exoq} 
+\begin{exor}
+Le chiffrement rend les données incompréhensibles pour toute personne autre que le destinataire. \bqr
+\end{exor} 
+\end{taggedblock}
+
+\begin{taggedblock}{2}
+\begin{exoq}
+Quel est le principe du chiffrement rot13 ?
+\end{exoq} 
+\begin{exor}
+Le chiffrement rot13 consiste à décaler les lettres de 13 rangs dans l'alphabet, ce qui permet de chiffrer mais aussi de déchiffrer. \bqr
+\end{exor} 
+\end{taggedblock}
+
+\begin{taggedblock}{3}
+\begin{exoq}
+Qu'est-ce que la norme AES ?
+\end{exoq} 
+\begin{exor}
+L'AES est une norme de chiffrement moderne proposant des clefs de 128, 192 ou 256 bits. \bqr
+\end{exor} 
+\end{taggedblock}
+
+\begin{taggedblock}{4}
+\begin{exoq}
+Quel est le principe de Kerckhoffs énoncé au XIXe siècle ?
+\end{exoq} 
+\begin{exor}
+La sécurité d'un système de chiffrement doit reposer uniquement sur le secret de la clef. \bqr
+\end{exor} 
+\end{taggedblock}
+
+\begin{taggedblock}{5}
+\begin{exoq}
+Quel est le principe du chiffrement symétrique ?
+\end{exoq} 
+\begin{exor}
+Le chiffrement symétrique utilise la même clef pour chiffrer et déchiffrer les données. \bqr
+\end{exor} 
+\end{taggedblock}
+
+\begin{taggedblock}{6}
+\begin{exoq}
+Quel est l'avantage du chiffrement symétrique ?
+\end{exoq} 
+\begin{exor}
+Le chiffrement symétrique est très robuste et permet de chiffrer une grande quantité de données en temps réel. \bqr
+\end{exor} 
+\end{taggedblock}
+
+\begin{taggedblock}{7}
+\begin{exoq}
+Quel est le principal inconvénient du chiffrement symétrique ?
+\end{exoq} 
+\begin{exor}
+Le chiffrement symétrique nécessite que les deux parties s'echangent une clef qui doit rester secrète. \bqr
+\end{exor} 
+\end{taggedblock}
+
+\begin{taggedblock}{8}
+\begin{exoq}
+Comment fonctionne le chiffrement asymétrique ?
+\end{exoq} 
+\begin{exor}
+Il utilise une paire de clefs liées mathématiquement : la clef publique qui sert à chiffrer, et la clef privée qui sert à déchiffrer. \bqr
+\end{exor} 
+\end{taggedblock}
+
+\begin{taggedblock}{9}
+\begin{exoq}
+Dans le chiffrement asymétrique, comment l'expéditeur peut-il s'authentifier ?
+\end{exoq} 
+\begin{exor}
+Pour s'authentifier l'expéditeur chiffre sa signature avec sa clef privée, et le destinataire la vérifie avec la clef publique associée. \bqr
+\end{exor} 
+\end{taggedblock}
+
+\begin{taggedblock}{10}
+\begin{exoq}
+Quel est l'inconvénient majeur du chiffrement asymétrique par rapport au symétrique ?
+\end{exoq} 
+\begin{exor}
+Il nécessite des temps de calcul beaucoup plus longs pour chiffrer et déchiffrer les données. \bqr
+\end{exor} 
+\end{taggedblock}
+
+\begin{taggedblock}{11}
+\begin{exoq}
+Qu'est-ce qu'une attaque HDM (Homme Du Milieu) ?
+\end{exoq} 
+\begin{exor}
+C'est une attaque où un tiers malveillant se fait passer pour l'interlocuteur légitime. \bqr
+\end{exor} 
+\end{taggedblock}
+
+\begin{taggedblock}{12}
+\begin{exoq}
+Sur quels protocoles se base HTTPS ?
+\end{exoq} 
+\begin{exor}
+HTTPS se base sur HTTP et y ajoute le protocole TLS (Transport Layer Security) qui chiffre les données via un chiffrement asymétrique. \bqr
+\end{exor} 
+\end{taggedblock}
+
+\begin{taggedblock}{13}
+\begin{exoq}
+Qu'est-ce qu'un certificat TLS/SSL ?
+\end{exoq} 
+\begin{exor}
+C'est un certificat délivré par une autorité de certification qui permet d'authentifier le serveur. \bqr
+\end{exor} 
+\end{taggedblock}
